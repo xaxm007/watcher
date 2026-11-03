@@ -80,6 +80,9 @@ x-airflow-common:
     AIRFLOW_CONFIG: '/opt/airflow/config/airflow.cfg'
     AIRFLOW__OPENLINEAGE__TRANSPORT: '{"type":"http","url":"http://host.docker.internal:3000","endpoint":"api/v1/lineage"}'
     AIRFLOW__OPENLINEAGE__NAMESPACE: "data-lineage"
+    AIRFLOW__OPENLINEAGE__SPARK_INJECT_PARENT_JOB_INFO: "true"
+    AIRFLOW__OPENLINEAGE__SPARK_INJECT_TRANSPORT_INFO: "true"
+    AIRFLOW_CONN_SPARK_DEFAULT: "spark://local"
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/airflow/dags:/opt/airflow/dags
     - ${AIRFLOW_PROJ_DIR:-.}/airflow/logs:/opt/airflow/logs
