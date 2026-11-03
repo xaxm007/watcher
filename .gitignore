@@ -15,3 +15,6 @@ wheels/
 # Airflow-generated files
 airflow/*
 !airflow/Dockerfile
+
+# Data files
+data/
