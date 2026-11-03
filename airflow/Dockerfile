@@ -1,3 +1,7 @@
+# Get a Java 21 runtime
+FROM eclipse-temurin:21-jre AS java
+
+# Build the Airflow image
 FROM apache/airflow:3.3.2
 
 ARG AIRFLOW_VERSION=3.3.2
