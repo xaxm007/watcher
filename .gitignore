@@ -18,3 +18,7 @@ airflow/*
 
 # Data files
 data/
+
+# Spark-generated files
+spark/*
+!spark/Dockerfile
