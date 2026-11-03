@@ -343,7 +343,7 @@ services:
       dockerfile: spark/Dockerfile
     container_name: spark
     environment:
-      JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+      JAVA_HOME: /usr/lib/jvm/java-21-openjdk-arm64
       PYSPARK_PYTHON: python3
     volumes:
       - ./spark/jobs:/opt/spark/jobs
