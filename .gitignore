@@ -22,3 +22,12 @@ data/
 # Spark-generated files
 spark/*
 !spark/Dockerfile
+
+# Test files
+test/
+
+# Documentation
+docs/
+
+# MacOS-generated files
+.DS_Store
