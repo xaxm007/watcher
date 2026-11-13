@@ -1,30 +1,65 @@
-# Get a Java 21 runtime
-FROM eclipse-temurin:21-jre AS java
+ARG AIRFLOW_VERSION=3.0.0
+ARG PYTHON_VERSION=3.12
 
-# Build the Airflow image
-FROM apache/airflow:3.3.2
-
-ARG AIRFLOW_VERSION=3.3.2
-ARG PYTHON_VERSION=3.13
+FROM apache/airflow:slim-${AIRFLOW_VERSION}-python${PYTHON_VERSION}
 
 USER root
 
-# Copy Java 21 into the Airflow image
-COPY --from=java /opt/java/openjdk /opt/java/openjdk
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        openjdk-17-jre-headless \
+        procps \
+    && rm -rf /var/lib/apt/lists/* \
+    && JAVA_HOME_PATH="$(dirname "$(dirname "$(readlink -f "$(command -v java)")")")" \
+    && ln -s "${JAVA_HOME_PATH}" /usr/local/openjdk-17
 
-ENV JAVA_HOME=/opt/java/openjdk
+ENV JAVA_HOME=/usr/local/openjdk-17
 ENV PATH="${JAVA_HOME}/bin:${PATH}"
-ENV PYSPARK_PYTHON=python3
-ENV PYSPARK_DRIVER_PYTHON=python3
 
 USER airflow
 
+COPY requirements.txt /tmp/requirements.txt
+
 RUN pip install --no-cache-dir \
     "apache-airflow==${AIRFLOW_VERSION}" \
-    "apache-airflow-providers-openlineage" \
-    "apache-airflow-providers-apache-spark" \
-    "pyspark==3.5.7" \
-    --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt"
+    -r /tmp/requirements.txt \
+    --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-3.12.txt"
+
+
+
+
+# # Get a Java 21 runtime
+# FROM eclipse-temurin:21-jre AS java
+
+# # Build the Airflow image
+# FROM apache/airflow:3.3.2
+
+# ARG AIRFLOW_VERSION=3.3.2
+# ARG PYTHON_VERSION=3.13
+
+# USER root
+
+# # Copy Java 21 into the Airflow image
+# COPY --from=java /opt/java/openjdk /opt/java/openjdk
+
+# ENV JAVA_HOME=/opt/java/openjdk
+# ENV PATH="${JAVA_HOME}/bin:${PATH}"
+# ENV PYSPARK_PYTHON=python3
+# ENV PYSPARK_DRIVER_PYTHON=python3
+
+# USER airflow
+
+# RUN pip install --no-cache-dir \
+#     "apache-airflow==${AIRFLOW_VERSION}" \
+#     "apache-airflow-providers-openlineage" \
+#     "apache-airflow-providers-apache-spark" \
+#     "pyspark==3.5.7" \
+#     --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt"
+
+
+
+
+
 
 # FROM apache/airflow:3.3.2
 
