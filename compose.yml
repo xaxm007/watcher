@@ -81,8 +81,8 @@ x-airflow-common:
 
     # AIRFLOW_CONN_SPARK_DEFAULT: "spark://spark-master:7077"
     AIRFLOW_CONN_SPARK_DEFAULT: '{"conn_type": "spark", "host": "spark://spark-master", "port": 7077}'
-    AIRFLOW__OPENLINEAGE__SPARK_INJECT_PARENT_JOB_INFO: "false"
-    AIRFLOW__OPENLINEAGE__SPARK_INJECT_TRANSPORT_INFO: "false"
+    AIRFLOW__OPENLINEAGE__SPARK_INJECT_PARENT_JOB_INFO: "true"
+    AIRFLOW__OPENLINEAGE__SPARK_INJECT_TRANSPORT_INFO: "true"
 
   volumes:
     - ${AIRFLOW_PROJ_DIR:-.}/airflow/dags:/opt/airflow/dags
