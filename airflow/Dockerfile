@@ -25,7 +25,13 @@ RUN pip install --no-cache-dir \
     -r /tmp/requirements.txt \
     --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-3.12.txt"
 
-
+# Installed WITHOUT the constraint file: the constraints pin pyspark (3.5.5) and the
+# openlineage provider (2.2.0, which breaks Spark parent-job injection on Airflow 3).
+# pyspark must match the Spark cluster image (apache/spark:3.5.4).
+ARG SPARK_VERSION=3.5.4
+RUN pip install --no-cache-dir \
+    "pyspark==${SPARK_VERSION}" \
+    "apache-airflow-providers-openlineage>=2.10"
 
 
 # # Get a Java 21 runtime
